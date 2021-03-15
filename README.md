@@ -1,2 +1,2 @@
-# Sr.Cotorre-Telegram
-Versión del Sr. Cotorre para Telegram
+# Sr. Co-Torre "Telegram Edition"
+Versión de Telegram del Bot del Sr. Cotorre
