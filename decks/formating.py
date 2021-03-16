@@ -36,24 +36,24 @@ def format_deck(deck, info):
                 "treachery": "Traiciones/Enemigos: (%s)" % str(info["treachery_q"]) if info['treachery_q'] > 0 else "",
                 }
 
-    text = "%(name)s" \
+    text = "%(name)s \n" \
            "%(investigator)s \n" \
-           "%(xp)s" % formater
+           "%(xp)s \n" % formater
 
     if info['assets_q'] > 0:
-        text += "%(assets)s" % formater
+        text += "%(assets)s \n" % formater
         text += format_all_assets(info)
 
     if info['events_q'] > 0:
-        text += "%(events)s" % formater
+        text += "%(events)s \n" % formater
         text += format_list_of_cards(info['events'])
 
     if info['skills_q'] > 0:
-        text += "%(skills)s" % formater
+        text += "%(skills)s \n" % formater
         text += format_list_of_cards(info['skills'])
 
     if info['treachery_q'] > 0:
-        text += "%(treachery)s" % formater
+        text += "%(treachery)s \n" % formater
         text += format_list_of_cards(info['treachery'])
 
     return text, deck['name']
@@ -100,6 +100,6 @@ def format_list_of_cards(arr):
         aux.append(format_player_card_short(c, q))
     aux = sorted(aux)
     for c in aux:
-        text += "\n%s" % c[1:]
+        text += "%s\n" % c[1:]
 
     return text

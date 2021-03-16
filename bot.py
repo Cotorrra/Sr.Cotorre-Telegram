@@ -33,7 +33,8 @@ LISTENING = 0
 
 def send_help(update, context):
     res = "¿Necesitas ayuda?: \n" \
-          "\n- !ahj [nombre] ~[subtitulo]~ ([extra]): Busca cartas en ArkhamDB.\n" \
+          "(En general funcional igual que la versión de Discord) \n" \
+          "\n- !ah [nombre] ~[subtitulo]~ ([extra]): Busca cartas en ArkhamDB.\n" \
           "[extra] puede contener ser lo siguiente: '0-5' nivel de la carta, " \
           "'G/B/R/M/S/N' la clase de la carta, P para permanente, U para único, E para excepcional, " \
           "C para característica.\n" \
@@ -45,8 +46,8 @@ def send_help(update, context):
           "El [extra] de !ahback y !ahm permiten buscar cartas por tipo: S: Escenario, A: Acto, P: Plan, T: Traicion," \
           "E: Enemigo, L: Lugar y J: Por cartas de jugador de encuentros." \
           "\n- !ahd [numero]: Busca en ArkhamDB el mazo dado y lo muestra, tanto público como privado.\n" \
-          "\n- !ahu [numero] [numero] Busca en ArkhamDB ambos mazos y muestra las mejoras realizadas en los mazos." \
-          "Si mejoraste el mazo con ArkhamDB puedes también entregarle sólo el número del mazo más reciente."
+          "Por el momento estos comandos sólo se pueden hacer mientras haces un @SrCotorre_bot \n" \
+
     update.message.reply_text(res)
 
 
@@ -71,7 +72,7 @@ def look_for_deck(code):
         deck_info = extract_deck_info(deck, ah_all_cards)
         response, title = format_deck(deck, deck_info)
 
-    return response, code, title
+    return [response], [code], [title]
 
 
 def look_for_encounter(query):
@@ -79,8 +80,8 @@ def look_for_encounter(query):
     return resolve_search(r_cards)
 
 
-def look_for_upgrades(query):
-    return search_for_upgrades(query, ah_player)
+# def look_for_upgrades(query):
+#   return search_for_upgrades(query, ah_player)
 
 
 def handle_query(command, query):
@@ -97,18 +98,8 @@ def handle_query(command, query):
     elif command == "!ahback":
         return look_for_card_back(query)
 
-    elif command == "!ahu":
-        return look_for_upgrades(query)
-
     else:
         return response, "00000", "Sin resultados"
-
-
-def start_func(update, context):
-    chat_id = update.effective_chat.id
-    context.bot.send_message(chat_id=chat_id,
-                             text='Sr. "Co-Torre" está preparado c:',
-                             parse_mode=telegram.ParseMode.HTML)
 
 
 def inline_fun(update, context):
@@ -125,7 +116,7 @@ def inline_fun(update, context):
                 id=codes[i],
                 title=titles[i],
                 input_message_content=InputTextMessageContent(responses[i],
-                                                          parse_mode=telegram.ParseMode.HTML)
+                                                              parse_mode=telegram.ParseMode.HTML)
             )
         )
 
@@ -133,7 +124,7 @@ def inline_fun(update, context):
 
 
 # dispatcher.add_handler(CommandHandler("start", start_func))
-# dispatcher.add_handler(CommandHandler("help", send_help))
+dispatcher.add_handler(CommandHandler("help", send_help))
 # dispatcher.add_handler(MessageHandler(Filters.text, handle_text))
 # dispatcher.add_error_handler(error_func)
 # add an handler for normal text (not commands)
