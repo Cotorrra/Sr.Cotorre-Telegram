@@ -1,9 +1,19 @@
 import os
-import telegram
-import telegram.ext
+
 import requests
+import telegram.ext
 from dotenv import load_dotenv
+from telegram import InputTextMessageContent, InlineQueryResultArticle
 from telegram.ext import CommandHandler, MessageHandler, Filters, InlineQueryHandler
+
+from backs.search import resolve_back_search
+from core.resolve import resolve_search
+from core.search import card_search
+from decks.deck import extract_deck_info
+from decks.formating import format_deck
+from decks.search import find_deck, search_for_upgrades
+from e_cards.search import use_ec_keywords
+from p_cards.search import use_pc_keywords
 
 load_dotenv()
 TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -19,11 +29,6 @@ ah_encounter = [c for c in ah_all_cards if "spoiler" in c]
 
 raw_text = False
 LISTENING = 0
-
-
-def handle_text(update, context):
-    text_received = update.message.text
-    update.message.reply_text(f'did you said "{text_received}" ?')
 
 
 def send_help(update, context):
@@ -45,83 +50,95 @@ def send_help(update, context):
     update.message.reply_text(res)
 
 
-"""
-def look_for_card_back(ctx):
-
-    query = ' '.join(ctx.message.content.split()[1:])
-
+def look_for_card_back(query):
     f_cards = [c for c in ah_all_cards if c["double_sided"]]
     r_cards = card_search(query, f_cards, use_ec_keywords)
 
-    response = resolve_back_search(r_cards)
+    return resolve_back_search(r_cards)
 
-    return response
 
-def look_for_player_card(ctx):
-    query = ' '.join(ctx.message.content.split()[1:])
-
+def look_for_player_card(query):
     r_cards = card_search(query, ah_player, use_pc_keywords)
-
-    response = resolve_search(r_cards)
-
-    return response
+    return resolve_search(r_cards)
 
 
-def look_for_deck(ctx, code: str):
+def look_for_deck(code):
     deck = find_deck(code)
     if not deck:
-        response = "Mazo no encontrado"
-        await ctx.send(response)
+        response = ""
+        title = "Mazo no encontrado"
     else:
         deck_info = extract_deck_info(deck, ah_all_cards)
-        embed = format_deck(deck, deck_info)
-        response = "¡Mazo Encontrado!"
+        response, title = format_deck(deck, deck_info)
 
-    return response
+    return response, code, title
 
 
-def look_for_encounter(message):
-    query = ' '.join(ctx.message.content.split()[1:])
-
+def look_for_encounter(query):
     r_cards = card_search(query, ah_encounter, use_ec_keywords)
-    response, embed = resolve_search(r_cards)
+    return resolve_search(r_cards)
 
-    if embed:
-        await ctx.send(response, embed=embed)
+
+def look_for_upgrades(query):
+    return search_for_upgrades(query, ah_player)
+
+
+def handle_query(command, query):
+    response = ""
+    if command == "!ah":
+        return look_for_player_card(query)
+
+    elif command == "!ahe":
+        return look_for_encounter(query)
+
+    elif command == "!ahd":
+        return look_for_deck(query)
+
+    elif command == "!ahback":
+        return look_for_card_back(query)
+
+    elif command == "!ahu":
+        return look_for_upgrades(query)
+
     else:
-        await ctx.send(response)
-
-
-def look_for_upgrades(message):
-    query = ctx.message.content.split()[1:]
-
-    response, embed = search_for_upgrades(query, ah_player)
-    if embed:
-        await ctx.send(response, embed=embed)
-    else:
-        await ctx.send(response)
- 
-"""
-
-
-def error_func(update, context):
-    update.message.reply_text("Hubo un error :c")
+        return response, "00000", "Sin resultados"
 
 
 def start_func(update, context):
-    update.message.reply_text('Sr. "Co-Torre" está preparado c:')
+    chat_id = update.effective_chat.id
+    context.bot.send_message(chat_id=chat_id,
+                             text='Sr. "Co-Torre" está preparado c:',
+                             parse_mode=telegram.ParseMode.HTML)
 
-def inline_
 
-dispatcher.add_handler(CommandHandler("start", start_func))
-dispatcher.add_handler(CommandHandler("help", send_help))
-dispatcher.add_error_handler(error_func)
+def inline_fun(update, context):
+    msg = update.inline_query.query
+    print(msg)
+    command = msg.split()[0]
+    query = ' '.join(msg.split()[1:])
+    responses, codes, titles = handle_query(command, query)
 
+    results = list()
+    for i in range(len(responses)):
+        results.append(
+            InlineQueryResultArticle(
+                id=codes[i],
+                title=titles[i],
+                input_message_content=InputTextMessageContent(responses[i],
+                                                          parse_mode=telegram.ParseMode.HTML)
+            )
+        )
+
+    context.bot.answer_inline_query(update.inline_query.id, results)
+
+
+# dispatcher.add_handler(CommandHandler("start", start_func))
+# dispatcher.add_handler(CommandHandler("help", send_help))
+# dispatcher.add_handler(MessageHandler(Filters.text, handle_text))
+# dispatcher.add_error_handler(error_func)
 # add an handler for normal text (not commands)
-dispatcher.add_handler(MessageHandler(Filters.text, handle_text))
-inline_handler = InlineQueryHandler()
+inline_handler = InlineQueryHandler(inline_fun)
 dispatcher.add_handler(inline_handler)
 
 updater.start_polling()
 updater.idle()
-

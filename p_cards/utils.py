@@ -17,14 +17,14 @@ def format_xp(c):
 
 def format_slot(c):
     formater = {
-        "Accessory.": "<:Accesorio:813546875856355359>",
-        "Ally.": "<:Aliado:813546887989821472>",
-        "Arcane.": "<:huecoarcano:813551281791959040>",
-        "Arcane x2.": "<:Dosarcanos:813552984432050186>",
-        "Body.": "<:Cuerpo:813546864074162226>",
-        "Hand.": "<:Mano:813546904428347402>",
-        "Hand x2.": "<:Dosmanos:813546852083302460>",
-        "Tarot.": "<:Tarot:813551294156767232>"
+        "Accessory.": "💍",
+        "Ally.": "👥",
+        "Arcane.": "⭐️",
+        "Arcane x2.": "⭐️⭐️",
+        "Body.": "🧥",
+        "Hand.": "🖐",
+        "Hand x2.": "🤲",
+        "Tarot.": "🃏"
     }
     text = ""
     if "real_slot" in c:

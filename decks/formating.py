@@ -1,5 +1,3 @@
-import discord
-
 from core.formating import format_text
 from p_cards.formating import format_inv_card_f_short, format_player_card_short
 
@@ -7,7 +5,7 @@ from p_cards.formating import format_inv_card_f_short, format_player_card_short
 def format_assets(arr, title):
     text = ""
     if arr:
-        text += "_%s:_" % title
+        text += "<i>%s:</i>" % title
         aux = []
         for (c, q) in arr:
             aux.append(format_player_card_short(c, q))
@@ -30,7 +28,7 @@ def format_all_assets(info):
 
 def format_deck(deck, info):
     formater = {"name": "%s" % deck['name'],
-                "investigator": "_Mazo para %s_" % deck['investigator_name'],
+                "investigator": "<i>Mazo para %s</i>" % deck['investigator_name'],
                 "xp": "Experiencia Necesaria: %s" % str(info['xp']),
                 "assets": "Apoyos: (%s)" % str(info["assets_q"]) if info['assets_q'] > 0 else "",
                 "events": "Eventos: (%s)" % str(info["events_q"]) if info['events_q'] > 0 else "",
@@ -38,47 +36,46 @@ def format_deck(deck, info):
                 "treachery": "Traiciones/Enemigos: (%s)" % str(info["treachery_q"]) if info['treachery_q'] > 0 else "",
                 }
 
-    m_title = "%(name)s" % formater
-    m_description = "%(investigator)s \n" \
-                    "%(xp)s" % formater
+    text = "%(name)s" \
+           "%(investigator)s \n" \
+           "%(xp)s" % formater
 
-    inline = False
-
-    embed = discord.Embed(title=m_title, description=m_description, color=info['color'])
     if info['assets_q'] > 0:
-        embed.add_field(name="%(assets)s" % formater, value=format_all_assets(info), inline=inline)
+        text += "%(assets)s" % formater
+        text += format_all_assets(info)
 
     if info['events_q'] > 0:
-        embed.add_field(name="%(events)s" % formater, value=format_list_of_cards(info['events']), inline=inline)
+        text += "%(events)s" % formater
+        text += format_list_of_cards(info['events'])
 
     if info['skills_q'] > 0:
-        embed.add_field(name="%(skills)s" % formater, value=format_list_of_cards(info['skills']), inline=inline)
+        text += "%(skills)s" % formater
+        text += format_list_of_cards(info['skills'])
 
     if info['treachery_q'] > 0:
-        embed.add_field(name="%(treachery)s" % formater, value=format_list_of_cards(info['treachery']), inline=inline)
+        text += "%(treachery)s" % formater
+        text += format_list_of_cards(info['treachery'])
 
-    return embed
+    return text, deck['name']
 
 
 def format_upgraded_deck(deck1, info):
     formater = {"name": "%s" % deck1['name'],
-                "investigator": "_Mazo para %s_" % deck1['investigator_name'],
+                "investigator": "<i>Mazo para %s</i>" % deck1['investigator_name'],
                 "xp": "Experiencia Utilizada: %s" % str(info['xp_diff']),
                 }
 
-    m_title = "%(name)s" % formater
-    m_description = "%(investigator)s \n" \
-                    "%(xp)s" % formater
-
-    embed = discord.Embed(title=m_title, description=m_description, color=info['color'])
+    text = "%(name)s" \
+           "%(investigator)s \n" \
+           "%(xp)s" % formater
 
     if len(info['buys_out']) > 0:
-        embed.add_field(name="Cambios (-):",
-                        value=format_list_of_cards(info["buys_out"]), inline=True)
+        text += "Cambios (-):"
+        text += format_list_of_cards(info["buys_out"])
 
     if len(info['buys_in']) > 0:
-        embed.add_field(name="Cambios (+):",
-                        value=format_list_of_cards(info["buys_in"]), inline=True)
+        text += "Cambios (+):"
+        text += format_list_of_cards(info["buys_in"])
 
     # if in_out_len(info, 'arcane_upg') > 0:
     #   embed.add_field(name="Mejora de Investigación Arcana", value=format_upgrades(info, 'arcane_upg'), inline=False)
@@ -93,7 +90,7 @@ def format_upgraded_deck(deck1, info):
     #    embed.add_field(name="Cambios por Adaptable (+)",
     #                    value=format_list_of_cards(format_in_out_upgr(info, "adaptable")[1]), inline=True)
 
-    return embed
+    return text, deck1['name']
 
 
 def format_list_of_cards(arr):
@@ -106,4 +103,3 @@ def format_list_of_cards(arr):
         text += "\n%s" % c[1:]
 
     return text
-
