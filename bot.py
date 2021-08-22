@@ -34,7 +34,7 @@ LISTENING = 0
 def send_help(update, context):
     res = "¿Necesitas ayuda?: \n" \
           "(En general funcional igual que la versión de Discord) \n" \
-          "\n- !ahj [nombre] ~[subtitulo]~ ([extra]): Busca cartas en ArkhamDB.\n" \
+          "\n- !ah [nombre] ~[subtitulo]~ ([extra]): Busca cartas en ArkhamDB.\n" \
           "[extra] puede contener ser lo siguiente: '0-5' nivel de la carta, " \
           "'G/B/R/M/S/N' la clase de la carta, P para permanente, U para único, E para excepcional, " \
           "C para característica.\n" \
