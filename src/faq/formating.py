@@ -1,12 +1,12 @@
 from src.faq.faq import load_faq, has_faq, get_faq
 from src.core.formating import format_name, format_subtext, format_faction, format_illus_pack, create_embed, \
     format_card_text, format_text
-from src.p_cards.utils import format_xp
+from src.core.utils import format_xp
 
 
 def format_faq_text(card_id, back=False):
     faq_info = load_faq(card_id)
-    text = "**Preguntas frecuentes**: \n"
+    text = "<b>Preguntas frecuentes</b>: \n"
     if has_faq(card_id, faq_info):
         card = get_faq(card_id, faq_info)
         if back and ('text_back' in card):

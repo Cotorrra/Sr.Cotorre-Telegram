@@ -3,6 +3,8 @@ import os
 
 import requests
 
+from src.core.formating import format_text
+
 
 def load_from_repo(file_src):
     try:
@@ -66,3 +68,25 @@ def make_str_from_args(args):
         text += f"{a} "
 
     return text[:-1]
+
+
+def get_title(c):
+    text = ""
+    if 'faction_code' in c:
+        text += format_text("[%s]" % c['faction_code'])
+    text += c['name']
+    text += format_xp(c)
+    return text
+
+
+def format_xp(c):
+    if "xp" in c:
+        if c['xp'] == 0:
+            text = ""
+        elif c['exceptional']:
+            text = " (%sE)" % c['xp']
+        else:
+            text = " (%s)" % c['xp']
+    else:
+        text = ""
+    return text

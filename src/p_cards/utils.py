@@ -2,19 +2,6 @@ from src.core.formating import format_text, format_number, color_picker
 from src.core.search import find_by_id
 
 
-def format_xp(c):
-    if "xp" in c:
-        if c['xp'] == 0:
-            text = ""
-        elif c['exceptional']:
-            text = " (%sE)" % c['xp']
-        else:
-            text = " (%s)" % c['xp']
-    else:
-        text = ""
-    return text
-
-
 def format_slot(c):
     formater = {
         "Accessory.": "Accesorio",

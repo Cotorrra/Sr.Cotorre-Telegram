@@ -8,7 +8,7 @@ def format_inv_card_b(c):
                 "name": format_name(c),
                 "subname": format_subtext(c),
                 "deck_req": "- %s \n" % format_card_text(c, "back_text") if "back_text" in c else "",
-                "flavour": "__%s__\n" % c['back_flavor'] if "back_flavor" in c else "",
+                "flavour": "<i>%s</i>\n" % c['back_flavor'] if "back_flavor" in c else "",
                 "errata_text": format_errata_text(c['code'], back=True),
                 }
     m_title = "%(class)s %(name)s %(subname)s " % formater
@@ -22,8 +22,8 @@ def format_inv_card_b(c):
 
 def format_location_card_b(c):
     formater = {"name": format_name(c),
-                "back": "- %s \n" % format_card_text(c, "back_text") if "back_text" in c else "",
-                "flavour": "__%s__\n" % format_card_text(c, "back_flavor") if "back_flavor" in c else "",
+                "back": "%s \n" % format_card_text(c, "back_text") if "back_text" in c else "",
+                "flavour": "<i>%s</i>\n" % format_card_text(c, "back_flavor") if "back_flavor" in c else "",
                 }
     m_title = "%(name)s" % formater
     m_description = "%(back)s \n" \
@@ -36,9 +36,9 @@ def format_location_card_b(c):
 def format_general_card_b(c):
     formater = {"name": format_name(c),
                 "subname": format_subtext(c),
-                "back": "- %s \n" % format_card_text(c, "back_text") if "back_text" in c else "",
+                "back": "%s \n" % format_card_text(c, "back_text") if "back_text" in c else "",
                 "pack": format_set(c),
-                "flavour": "__%s__\n" % c['back_flavor'] if "back_flavor" in c else "",
+                "flavour": "<i>%s</i>\n" % c['back_flavor'] if "back_flavor" in c else "",
                 }
     m_title = "%(name)s %(subname)s" % formater
     m_description = "%(back)s \n" \

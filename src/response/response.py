@@ -3,7 +3,7 @@ import requests
 from src.faq.formating import format_faq
 from src.backs.search import resolve_back_search
 from src.core.resolve import resolve_search
-from src.core.search import card_search
+from src.core.search import card_search, use_all_keywords
 from src.decks.deck import extract_deck_info
 from src.decks.formating import format_deck
 from src.decks.search import find_deck, search_for_upgrades
@@ -26,6 +26,11 @@ ah_player = requests.get('https://es.arkhamdb.com/api/public/cards?encounter=0')
 ah_encounter = [c for c in ah_all_cards if "spoiler" in c]
 
 
+def look_for_cards(query: str):
+    r_cards = card_search(query, ah_all_cards, use_all_keywords)
+    return r_cards
+
+
 def look_for_player_card(query: str):
     """
     Given a query, a list of cards and a keyword function
@@ -33,7 +38,7 @@ def look_for_player_card(query: str):
     :param query: A query string, it can contain an (TYPE) or a ~Subtext~
     :param cards: The cards to search from
     :param keyword_fun: A function that filters cards given the keywords in (TYPE)
-    :return: a Discord.Embed
+    :return:
     """
     r_cards = card_search(query, ah_player, use_pc_keywords)
     embed = resolve_search(r_cards)
@@ -48,7 +53,7 @@ def look_for_mythos_card(query: str):
     Given a query, a list of cards and a keyword function
     returns a embed containing the information of a mythos card.
     :param query: A query string, it can contain an (TYPE) or a ~Subtext~
-    :return: a Discord.Embed
+    :return:
     """
     r_cards = card_search(query, ah_encounter, use_ec_keywords)
     embed = resolve_search(r_cards)

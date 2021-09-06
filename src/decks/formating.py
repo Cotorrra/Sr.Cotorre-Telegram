@@ -4,7 +4,7 @@ from src.p_cards.formating import format_player_card_deck
 def format_assets(arr, title):
     text = ""
     if arr:
-        text += "_%s:_" % title
+        text += "<i>%s:</i>" % title
         aux = []
         for (c, q) in arr:
             aux.append(format_player_card_deck(c, q))
@@ -27,7 +27,7 @@ def format_all_assets(info):
 
 def format_deck(deck, info):
     formater = {"name": "%s" % deck['name'],
-                "investigator": "_Mazo para %s_" % deck['investigator_name'],
+                "investigator": "<i>Mazo para %s</i>" % deck['investigator_name'],
                 "xp": "Experiencia necesaria: %s" % str(info['xp']),
                 "assets": "Apoyos: (%s)" % str(info["assets_q"]) if info['assets_q'] > 0 else "",
                 "events": "Eventos: (%s)" % str(info["events_q"]) if info['events_q'] > 0 else "",
@@ -37,7 +37,7 @@ def format_deck(deck, info):
 
     text = "%(name)s \n" \
            "%(investigator)s \n" \
-           "%(xp)s \n" % formater
+           "%(xp)s \n\n" % formater
 
     if info['assets_q'] > 0:
         text += "%(assets)s \n" % formater
@@ -65,27 +65,27 @@ def format_deck(deck, info):
 
 def format_upgraded_deck(deck1, info):
     formater = {"name": "%s" % deck1['name'],
-                "investigator": "__Mazo para %s__" % deck1['investigator_name'],
+                "investigator": "<i>Mazo para %s</i>" % deck1['investigator_name'],
                 "xp": "Experiencia utilizada: %s" % str(info['xp_diff']),
                 }
 
     text = "%(name)s" \
            "%(investigator)s \n" \
-           "%(xp)s" % formater
+           "%(xp)s\n\n" % formater
 
-    if len(info['buys_out']) > 0:
-        text += "Cambios (-):\n"
-        text += format_list_of_cards(info["buys_out"])
-        text += "\n"
     if len(info['buys_in']) > 0:
-        text += "Cambios (+):\n"
-        text += format_list_of_cards(info["buys_in"])
+        text += "Cartas añadidas:"
+        text += format_list_of_cards_upgr(info["buys_in"])
+        text += "\n"
+    if len(info['buys_out']) > 0:
+        text += "Cartas retiradas:"
+        text += format_list_of_cards_upgr(info["buys_out"])
         text += "\n"
     if deck1['user_id']:
         url = "https://es.arkhamdb.com/decklist/view/%s" % deck1['id']
     else:
         url = "https://es.arkhamdb.com/deck/view/%s" % deck1['id']
-    text += f"Mazo en ArkhamDB: {url}"
+    text += f"\nMazo en ArkhamDB: {url}"
     return text
 
 
@@ -105,7 +105,7 @@ def format_list_of_cards_upgr(arr):
     array = sorted(array)
     text = ""
     for c in array:
-        text += "\n%s" % c[1:]
+        text += "\n- %s" % c[1:]
 
     return text
 

@@ -7,10 +7,10 @@ def format_enemy_card(c):
     formater = {"name": format_name(c),
                 "subtext": format_subtext(c),
                 "faction": format_faction(c),
-                "type": "**%s**\n" % c['type_name'],
+                "type": "<b>%s</b>\n" % c['type_name'],
                 "traits": "%s\n" % c['traits'] if "traits" in c else "",
-                "text": "- %s \n" % format_card_text(c),
-                "flavour": "__%s__\n\n" % format_text(c['flavor']) if "flavor" in c else "",
+                "text": "%s \n" % format_card_text(c),
+                "flavour": "<i>%s</i>\n\n" % format_text(c['flavor']) if "flavor" in c else "",
                 "stats": "%s \n" % format_enemy_stats(c),
                 "attack": "Ataque: %s\n" % format_attack(c) if format_attack(c) != "" else "",
                 "victory": format_victory(c),
@@ -34,10 +34,10 @@ def format_enemy_card(c):
 
 def format_act_card_f(c):
     formater = {"name": format_name(c),
-                "stage": "**Acto %s**\n" % c['stage'],
-                "flavour": "__%s__\n" % format_text(c['flavor']) if "flavor" in c else "",
+                "stage": "<b>Acto %s</b>\n" % c['stage'],
+                "flavour": "<i>%s</i>\n" % format_text(c['flavor']) if "flavor" in c else "",
                 "clues": "%s\n" % format_clues(c),
-                "text": "- %s \n" % format_card_text(c) if "text" in c else "",
+                "text": "%s \n" % format_card_text(c) if "text" in c else "",
                 "errata_text": format_errata_text(c['code']),
                 }
 
@@ -53,10 +53,10 @@ def format_act_card_f(c):
 
 def format_agenda_card_f(c):
     formater = {"name": format_name(c),
-                "stage": "**Plan %s**\n" % c['stage'],
-                "flavour": "__%s__\n" % format_text(c['flavor']) if "flavor" in c else "",
+                "stage": "<b>Plan %s</b>\n" % c['stage'],
+                "flavour": "<i>%s</i>\n" % format_text(c['flavor']) if "flavor" in c else "",
                 "doom": format_text("[doom] %s" % (c['doom'] if "doom" in c else "-")),
-                "text": "- %s \n" % format_card_text(c) if "text" in c else "",
+                "text": "%s \n" % format_card_text(c) if "text" in c else "",
                 "errata_text":  format_errata_text(c['code']),
                 }
 
@@ -74,8 +74,8 @@ def format_location_card_f(c):
     formater = {"name": format_name(c),
                 "subtext": format_subtext(c),
                 "traits": "%s\n" % c['traits'] if "traits" in c else "",
-                "text": "- %s \n" % format_card_text(c) if "text" in c else "",
-                "flavour": "__%s__\n" % format_text(c['flavor']) if "flavor" in c else "",
+                "text": "%s \n" % format_card_text(c) if "text" in c else "",
+                "flavour": "<i>%s</i>\n" % format_text(c['flavor']) if "flavor" in c else "",
                 "location_data": format_location_data(c),
                 "victory": format_victory(c),
                 "vengeance": format_vengeance(c),
@@ -95,8 +95,8 @@ def format_location_card_f(c):
 
 def format_scenario_card(c):
     formater = {"name": format_name(c),
-                "text": "- %s \n" % format_text(c['text']),
-                "b_text": "- %s \n" % format_text(c['back_text']),
+                "text": "%s \n" % format_text(c['text']),
+                "b_text": "%s \n" % format_text(c['back_text']),
                 "pack": format_set(c)}
 
     m_title = "%(name)s" % formater
@@ -109,10 +109,10 @@ def format_scenario_card(c):
 def format_treachery_card(c):
     formater = {"name": format_name(c),
                 "faction": format_faction(c),
-                "type": "**%s**\n" % c['type_name'],
+                "type": "%s\n" % c['type_name'],
                 "traits": "%s\n" % c['traits'] if "traits" in c else "",
-                "text": "- %s \n" % format_card_text(c),
-                "flavour": "__%s__\n" % format_text(c['flavor']) if "flavor" in c else "",
+                "text": "%s\n" % format_card_text(c),
+                "flavour": "<i>%s</i>\n" % format_text(c['flavor']) if "flavor" in c else "",
                 "errata_text": format_errata_text(c['code'], back=True),
                 }
 

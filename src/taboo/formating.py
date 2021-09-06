@@ -3,7 +3,7 @@ from src.taboo.taboo import current_taboo, is_in_taboo, get_tabooed_card
 
 
 def format_taboo_text(card_id, version=current_taboo):
-    text = "__**Tabú más reciente:**___ \n"
+    text = "<i><b>Tabú más reciente:</b></i>\n"
     if is_in_taboo(card_id, version):
         card = get_tabooed_card(card_id, version)
         if 'xp' in card:

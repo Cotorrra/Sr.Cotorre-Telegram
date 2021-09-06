@@ -5,7 +5,7 @@ def create_embed(c, title, description, footnote=""):
     # embed = "" # discord.Embed(title=title, description=description, color=color_picker(c), url=url)
         # embed.set_footer(text=footnote)
     # set_thumbnail_image(c, embed)
-    text = f"**{title}**\n" \
+    text = f"<b>{title}</b>\n" \
            f"{description}"
     if footnote:
         text += f"{footnote}"
@@ -43,16 +43,16 @@ def format_text(text):
                    "[per_investigator]": "[Por Investigador]",
                    "[doom]": "[Perdición]",
                    "[clues]": "[Pistas]",
-                   "</b>": "**",
-                   "<b>": "**",
-                   "<em>": "__",
-                   "</em>": "__",
-                   "<i>": "__",
-                   "</i>": "__",
-                   "<u>": "__",
-                   "</u>": "__",
-                   "[[": "**",
-                   "]]": "**",
+                   # "</b>": "**",
+                   # "<b>": "**",
+                   # "<em>": "__",
+                   # "</em>": "__",
+                   # "<i>": "__",
+                   # "</i>": "__",
+                   # "<u>": "__",
+                   # "</u>": "__",
+                   "[[": "<b><i>",
+                   "]]": "</i></b>",
                    "<cite>": "\n— ",
                    "</cite>": "",
                    }
@@ -93,7 +93,7 @@ def format_illus_pack(c, only_pack=False):
 
 def format_victory(c, override_spoiler=False):
     if "victory" in c:
-        text = "**Victoria %s.**" % c['victory']
+        text = "<b>Victoria %s.</b>" % c['victory']
         return "%s \n" % text
     else:
         return ""
@@ -101,7 +101,7 @@ def format_victory(c, override_spoiler=False):
 
 def format_vengeance(c, override_spoiler=False):
     if "vengeance" in c:
-        text = "**Venganza %s.**" % c['vengeance']
+        text = "<b>Venganza %s.</b>" % c['vengeance']
         return "%s \n" % text
     else:
         return ""
@@ -132,15 +132,15 @@ faction_order = {
 }
 
 
-def set_thumbnail_image(c, embed, back=False):
+def get_thumbnail_image(c, back=False):
     if "imagesrc" in c:
         if back:
             if "backimagesrc" in c:
-                embed.set_thumbnail(url="https://arkhamdb.com%s" % c["backimagesrc"])
+                return "https://arkhamdb.com%s" % c["backimagesrc"]
             else:
-                embed.set_thumbnail(url="https://arkhamdb.com%s" % c["imagesrc"])
+                return "https://arkhamdb.com%s" % c["imagesrc"]
         else:
-            embed.set_thumbnail(url="https://arkhamdb.com%s" % c["imagesrc"])
+            return "https://arkhamdb.com%s" % c["imagesrc"]
 
 
 def format_illustrator(c):
@@ -152,7 +152,7 @@ def format_name(c):
 
 
 def format_subtext(c):
-    return ": _%s_" % c['subname'] if 'subname' in c else ""
+    return ": <i>%s</i>" % c['subname'] if 'subname' in c else ""
 
 
 def color_picker(c):

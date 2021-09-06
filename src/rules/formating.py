@@ -2,6 +2,6 @@ from src.core.formating import format_text
 
 
 def format_rule(rule):
-    text = f"**{rule['title']}**\n"
+    text = f"<b>{rule['title']}</b>\n"
     text += "%s" % format_text(rule['text'])
     return text
