@@ -115,8 +115,10 @@ def format_number(n):
 
 
 def format_faction(c):
-    if 'faction2_code' in c:
-        return format_text("[%s]/[%s]" % (c['faction_code'], c['faction2_code']))
+    if 'faction3_code' in c:
+        return format_text("[%s][%s][%s]" % (c['faction_code'], c['faction2_code'], c['faction3_code']))
+    elif 'faction2_code' in c:
+        return format_text("[%s][%s]" % (c['faction_code'], c['faction2_code']))
     else:
         return format_text("[%s]" % c['faction_code'])
 
